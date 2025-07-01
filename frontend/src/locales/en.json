@@ -1,0 +1,20 @@
+{
+  "navbar": {
+    "home": "Home",
+    "products": "Products",
+    "serialLookup": "Serial Lookup"
+  },
+  "products": {
+    "catalog": "Our Product Catalog",
+    "description": "Discover our complete range of professional drilling equipment. Each product comes with verified authenticity and comprehensive warranty coverage.",
+    "searchPlaceholder": "Search products, models, or serial numbers...",
+    "found": "{{count}} Products Found",
+    "verify": "Verify Product",
+    "model": "Model: {{model}}",
+    "warranty": "Warranty:",
+    "serial": "Serial:",
+    "noProducts": "No products found",
+    "tryAdjusting": "Try adjusting your search terms or browse all products.",
+    "clearSearch": "Clear Search"
+  }
+}

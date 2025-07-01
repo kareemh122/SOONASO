@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 220 35% 98%; /* Very light blue-gray */
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    /* Deep navy blue for primary, vibrant orange for accent, gray for secondary */
+    --primary: 220 80% 24%; /* Deeper navy blue */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 96%; /* Light gray */
+    --secondary-foreground: 220 80% 24%;
+
+    --muted: 220 14% 92%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 28 98% 54%; /* Vibrant orange */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 88%;
+    --input: 220 13% 91%;
+    --ring: 28 98% 54%; /* Orange ring for focus */
+
+    --radius: 0.75rem; /* Slightly larger for modern look */
+    --shadow: 0 4px 24px 0 hsl(220 80% 24% / 0.08),
+      0 1.5px 4px 0 hsl(28 98% 54% / 0.04);
+  }
+  .dark {
+    --background: 220 80% 8%;
+    --foreground: 0 0% 100%;
+    --card: 220 80% 10%;
+    --card-foreground: 0 0% 100%;
+    --popover: 220 80% 10%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 28 98% 54%; /* Orange as primary in dark mode */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 80% 16%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 220 14% 20%;
+    --muted-foreground: 220 14% 70%;
+    --accent: 220 80% 24%; /* Deep blue accent in dark */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 18%;
+    --input: 220 13% 18%;
+    --ring: 28 98% 54%;
+    --radius: 0.75rem;
+    --shadow: 0 4px 24px 0 hsl(28 98% 54% / 0.1),
+      0 1.5px 4px 0 hsl(220 80% 24% / 0.04);
+  }
+}
+
+/* Modern shadow utility */
+.shadow-modern {
+  box-shadow: var(--shadow);
+}
+
+/* Modern card style */
+.card-modern {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
+}
+
+/* Modern button style */
+.button-modern {
+  border-radius: var(--radius);
+  box-shadow: 0 2px 8px 0 hsl(var(--primary) / 0.08);
+  font-weight: 600;
+}
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+  .card-modern {
+    padding: 1rem;
+  }
+  .button-modern {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
