@@ -1,12 +1,8 @@
 const express = require("express");
-const {
-  getAllProducts,
-  getFilteredProducts,
-  createProduct,
-} = require("../controllers/productController");
+const { getAllProducts, getFilteredProducts, createProduct } = require("../controllers/productController");
 const { productValidationRules } = require("../middlewares/productValidation");
-const validateRequest = require("../middlewares/validateRequest");
 const { checkImageFile } = require("../middlewares/checkImageFile");
+const validateRequest = require("../middlewares/validateRequest");
 
 const router = express.Router();
 
