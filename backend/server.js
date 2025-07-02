@@ -31,5 +31,5 @@ app.use("/api/lookup", lookupRoutes);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Backend API running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

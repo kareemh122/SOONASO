@@ -33,7 +33,7 @@ CREATE TABLE products (
     overall_height FLOAT,
     required_oil_flow FLOAT,
     operating_pressure FLOAT,
-    impact_rate_std FLOAT,
+    impact_rate FLOAT,
     impact_rate_soft_rock FLOAT,
     hose_diameter FLOAT,
     rod_diameter FLOAT,
