@@ -1,19 +1,12 @@
-// React and library imports
 import { useState } from "react";
-// Sidebar filter component and types
 import ProductFiltersSidebar, {
   ProductFilters,
 } from "@/components/ProductFiltersSidebar";
-// UI card components for product display
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-// UI input and button components
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-// Icon for search field
 import { Search } from "lucide-react";
-// Custom hook for fetching products
 import { useProducts } from "@/hooks/useProducts";
-// i18n translation hook
 import { useTranslation } from "react-i18next";
 
 // Main Products page component
@@ -54,9 +47,8 @@ const Products = () => {
       const n2 = parseFloat(match[2]);
       return `${tonToLb(n1)}~${tonToLb(n2)} lb`;
     }
-    if (system === "si" && match) {
-      return `${match[1]}~${match[2]} ton`;
-    }
+    if (system === "si" && match) return `${match[1]}~${match[2]} ton`;
+
     const single = val.match(/([\d.]+)\s*ton/);
     if (system === "imperial" && single)
       return `${tonToLb(parseFloat(single[1]))} lb`;
@@ -174,14 +166,18 @@ const Products = () => {
               return (
                 <Card
                   key={product.id}
-                  className="overflow-hidden card-modern bg-white dark:bg-[#1a2333] border border-[#e0e0e0] dark:border-[#222c3a] hover:shadow-modern transition-shadow"
+                  className="overflow-hidden card-modern bg-white dark:bg-[#1a2333] border border-[#e0e0e0] dark:border-[#222c3a] hover:shadow-modern transition-shadow cursor-pointer"
+                  onClick={() =>
+                    window.open(`/products/${product.id}`, "_blank")
+                  }
                 >
                   {/* Product image */}
-                  <div className="overflow-hidden bg-[#f7fafd] dark:bg-[#101a2b] w-full max-h-[320px]">
+                  <div className="aspect-video flex items-center justify-center overflow-hidden bg-[#f7fafd] dark:bg-[#101a2b]">
                     <img
                       src={product.image_url}
                       alt={product.name}
-                      className="w-full object-contain hover:scale-105 transition-transform duration-300"
+                      className="max-h-48 w-auto h-auto object-contain mx-auto"
+                      style={{ maxWidth: "100%", maxHeight: "12rem" }}
                       loading="lazy"
                       onError={(e) => {
                         e.currentTarget.onerror = null;

@@ -10,7 +10,6 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT;
 
-// CORS setup
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN || "*",
@@ -27,7 +26,6 @@ app.use(rateLimiter);
 app.use("/api/products", productRoutes);
 app.use("/api/lookup", lookupRoutes);
 
-// Error handler
 app.use(errorHandler);
 
 app.listen(PORT, () => {

@@ -14,6 +14,7 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LanguageToggle } from "@/components/ui/language-toggle";
 import Index from "./pages/Index";
 import Products from "./pages/Products";
+import ProductDetails from "./pages/ProductDetails";
 import SerialLookup from "./pages/SerialLookup";
 import NotFound from "./pages/NotFound";
 import { useTranslation } from "react-i18next";
@@ -30,11 +31,7 @@ const AppInner = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <img
-                src="/logo2.png"
-                alt="DrillPro Logo"
-                className="h-14 w-14"
-              />
+              <img src="/logo2.png" alt="DrillPro Logo" className="h-14 w-14" />
               {/* <span className="text-2xl font-bold text-primary ml-2">
                 DrillPro
               </span> */}
@@ -81,6 +78,7 @@ const AppInner = () => {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/products/:id" element={<ProductDetails />} />
           <Route path="/serial-lookup" element={<SerialLookup />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

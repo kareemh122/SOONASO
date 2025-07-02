@@ -7,7 +7,7 @@ CREATE TABLE owners (
     phone VARCHAR(20),
     email VARCHAR(100),
     company VARCHAR(100),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  
 );
 
 CREATE TABLE employees (
@@ -20,12 +20,11 @@ CREATE TABLE employees (
 
 CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    serial_number VARCHAR(100) NOT NULL UNIQUE,
+    serial_number VARCHAR(100) UNIQUE,
     name VARCHAR(100) NOT NULL,
+    category VARCHAR(50),       -- line
     type VARCHAR(100),
-    category VARCHAR(50), 
     image_url VARCHAR(255),
-
     body_weight FLOAT,
     operating_weight FLOAT, 
     overall_length FLOAT,
