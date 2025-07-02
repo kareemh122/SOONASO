@@ -9,11 +9,19 @@ const getAllProducts = async (req, res, next) => {
         LEFT JOIN owners o ON p.owner_id = o.id
         ORDER BY p.id DESC
       `);
+    if (!rows.length) {
+      return res.status(200).json({
+        data: [],
+        message: "No products found",
+      });
+    }
+
     res.status(200).json({
       data: rows,
       message: "Products retrieved successfully",
     });
-  } catch (err) {
+  } 
+  catch (err) {
     next(err);
   }
 };
@@ -130,8 +138,19 @@ const getFilteredProducts = async (req, res, next) => {
     }
     query += " ORDER BY p.id DESC";
     const [rows] = await db.query(query, params);
-    res.json(rows);
-  } catch (err) {
+    if(!rows.length) {
+      return res.status(200).json({
+        data: [],
+        message: "No products found matching your filter criteria",
+      });
+    }
+
+    res.status(200).json({
+      data: rows,
+      message: "Filtered products retrieved successfully",
+    });
+  } 
+  catch (err) {
     next(err);
   }
 };
@@ -209,7 +228,8 @@ const getProductById = async (req, res, next) => {
       data: rows[0],
       message: "Product retrieved successfully",
     });
-  } catch (err) {
+  } 
+  catch (err) {
     next(err);
   }
 };
@@ -273,7 +293,8 @@ const editProduct = async (req, res, next) => {
       message: "Product updated successfully",
       image_url: imageUrl,
     });
-  } catch (err) {
+  } 
+  catch (err) {
     next(err);
   }
 };
@@ -291,7 +312,8 @@ const deleteProduct = async (req, res, next) => {
       return res.status(404).json({ error: "Product not found" });
 
     res.status(200).json({ message: "Product deleted successfully" });
-  } catch (err) {
+  } 
+  catch (err) {
     next(err);
   }
 };
