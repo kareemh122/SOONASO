@@ -32,7 +32,9 @@ export const useProducts = (filters: ProductFilters = {}) => {
           : `${API_URL}/products`
       );
       if (!res.ok) throw new Error("Failed to fetch products");
-      return res.json();
+      const json = await res.json();
+      // Always return an object with a data property
+      return Array.isArray(json) ? { data: json } : json;
     },
   });
 };

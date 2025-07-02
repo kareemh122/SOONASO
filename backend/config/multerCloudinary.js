@@ -9,7 +9,7 @@ const storage = new CloudinaryStorage({
   params: {
     folder: "products",
     allowed_formats: ["jpg", "jpeg", "png", "webp"],
-    transformation: [{ width: 800, height: 600, crop: "limit" }],
+    transformation: [{ width: 1000, height: 800, crop: "fit", quality: "auto" }],
   },
 });
 

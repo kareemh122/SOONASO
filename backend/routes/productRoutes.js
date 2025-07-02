@@ -13,7 +13,6 @@ const validateRequest = require("../middlewares/validateRequest");
 
 const router = express.Router();
 
-
 router.get("/", getAllProducts);
 
 router.get("/filter", getFilteredProducts);
@@ -22,7 +21,7 @@ router.get("/:id", getProductById);
 
 router.post("/",
   productValidationRules,
-  checkImageFile,
+  checkImageFile,   
   validateRequest,
   createProduct
 );

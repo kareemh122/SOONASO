@@ -20,13 +20,33 @@ const getAllProducts = async (req, res, next) => {
       data: rows,
       message: "Products retrieved successfully",
     });
-  } 
-  catch (err) {
+  } catch (err) {
     next(err);
   }
 };
 
-// Filtered products endpoint
+const getProductById = async (req, res, next) => {
+  try {
+    const id = parseInt(req.params.id);
+    if (isNaN(id) || id <= 0)
+      return res.status(400).json({ error: "Invalid product ID" });
+
+    const [rows] = await db.query(
+      `SELECT p.*, o.full_name, o.company FROM products p LEFT JOIN owners o ON p.owner_id = o.id WHERE p.id = ?`,
+      [id]
+    );
+    if (!rows.length)
+      return res.status(404).json({ error: "Product not found" });
+
+    res.status(200).json({
+      data: rows[0],
+      message: "Product retrieved successfully",
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 const getFilteredProducts = async (req, res, next) => {
   try {
     // Accept arrays for each filter
@@ -138,7 +158,7 @@ const getFilteredProducts = async (req, res, next) => {
     }
     query += " ORDER BY p.id DESC";
     const [rows] = await db.query(query, params);
-    if(!rows.length) {
+    if (!rows.length) {
       return res.status(200).json({
         data: [],
         message: "No products found matching your filter criteria",
@@ -149,16 +169,14 @@ const getFilteredProducts = async (req, res, next) => {
       data: rows,
       message: "Filtered products retrieved successfully",
     });
-  } 
-  catch (err) {
+  } catch (err) {
     next(err);
   }
 };
 
-// --- Controller to handle product creation with image upload and secure input validation ---
 const createProduct = async (req, res, next) => {
   try {
-    // Extract sanitized fields in DB order
+    // DB field order (excluding image_url for now)
     const fields = [
       "serial_number",
       "name",
@@ -183,58 +201,39 @@ const createProduct = async (req, res, next) => {
     ];
 
     let params = sanitizeFields(req.body, fields);
-    // Insert Cloudinary image URL at correct position (after category)
-    let imageUrl = sanitizeImagePath(req.file?.path);
 
-    // If no owner, set owner_id, purchase_date, warranty_start, warranty_end to null
-    const ownerIndex = fields.indexOf("owner_id");
+    // Insert Cloudinary image URL at correct index (after category = index 3)
+    const imageUrl = sanitizeImagePath(req.file?.path);
+    params.splice(4, 0, imageUrl); // Now image_url is inserted at index 4
+
+    // If no owner, set owner-related fields to null
+    const ownerIndex = fields.indexOf("owner_id") + 1; // +1 because of image_url inserted
     if (!req.body.owner_id) {
-      params[ownerIndex] = null; // owner_id
+      params[ownerIndex] = null;     // owner_id
       params[ownerIndex + 1] = null; // purchase_date
       params[ownerIndex + 2] = null; // warranty_start
       params[ownerIndex + 3] = null; // warranty_end
     }
-    // SQL insert
+
     const query = `INSERT INTO products (
-          serial_number, name, type, category, image_url, body_weight, operating_weight, overall_length, overall_width, overall_height, required_oil_flow, operating_pressure, impact_rate, impact_rate_soft_rock, hose_diameter, rod_diameter, applicable_carrier, owner_id, purchase_date, warranty_start, warranty_end
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      serial_number, name, type, category, image_url,
+      body_weight, operating_weight, overall_length, overall_width, overall_height,
+      required_oil_flow, operating_pressure, impact_rate, impact_rate_soft_rock,
+      hose_diameter, rod_diameter, applicable_carrier,
+      owner_id, purchase_date, warranty_start, warranty_end
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
     const [result] = await db.query(query, params);
     res.status(201).json({
       id: result.insertId,
       image_url: imageUrl,
       message: "Product created successfully",
     });
-  } 
-  catch (err) {
+  } catch (err) {
     next(err);
   }
 };
 
-// --- Get product by ID ---
-const getProductById = async (req, res, next) => {
-  try {
-    const id = parseInt(req.params.id);
-    if (isNaN(id) || id <= 0)
-      return res.status(400).json({ error: "Invalid product ID" });
-
-    const [rows] = await db.query(
-      `SELECT p.*, o.full_name, o.company FROM products p LEFT JOIN owners o ON p.owner_id = o.id WHERE p.id = ?`,
-      [id]
-    );
-    if (!rows.length)
-      return res.status(404).json({ error: "Product not found" });
-
-    res.status(200).json({
-      data: rows[0],
-      message: "Product retrieved successfully",
-    });
-  } 
-  catch (err) {
-    next(err);
-  }
-};
-
-// --- Edit product (update) ---
 const editProduct = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id);
@@ -293,13 +292,11 @@ const editProduct = async (req, res, next) => {
       message: "Product updated successfully",
       image_url: imageUrl,
     });
-  } 
-  catch (err) {
+  } catch (err) {
     next(err);
   }
 };
 
-// --- Delete product ---
 const deleteProduct = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id);
@@ -312,8 +309,7 @@ const deleteProduct = async (req, res, next) => {
       return res.status(404).json({ error: "Product not found" });
 
     res.status(200).json({ message: "Product deleted successfully" });
-  } 
-  catch (err) {
+  } catch (err) {
     next(err);
   }
 };
